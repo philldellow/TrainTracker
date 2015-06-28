@@ -11,8 +11,7 @@ namespace TrainTracker
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello and Welcome");
-            Console.WriteLine("To view this menu at any time, enter 'Help'");
+            MenuManagment.MainMenu();
             string mainmenuresponse = Console.ReadLine();
             Console.WriteLine(mainmenuresponse);
             Console.ReadKey();
