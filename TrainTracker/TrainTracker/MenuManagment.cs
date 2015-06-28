@@ -38,5 +38,30 @@ namespace TrainTracker
                 Console.WriteLine(starryLine);
             }
         }
+
+        internal static void View()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void New()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void Edit()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void Calc()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void Exit()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
