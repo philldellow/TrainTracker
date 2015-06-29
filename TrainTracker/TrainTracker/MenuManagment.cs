@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
 
 namespace TrainTracker
 {
     class MenuManagment
     {
+        
         public static void MainMenu()
         {
             String blankLine = "**|                                           |**";
@@ -44,9 +46,22 @@ namespace TrainTracker
             throw new NotImplementedException();
         }
 
-        internal static void New()
+        public static void NewEntryMenu()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("     Please Enter a three character code that represents the;");
+            Console.WriteLine("              First letter of the Origin Name,");
+            Console.WriteLine("      The Second letter being the Destinations first letter,");
+            Console.WriteLine("         And the Third character a number representing");
+            Console.WriteLine("           the Distance between the two points");
+            Console.WriteLine("      i.e. Wellington to Auckland withs 9 distance would be");
+            Console.WriteLine("                            WA9");
+            Console.WriteLine("For multiple entries please separate the codes with only a comma");
+            Console.WriteLine("                 i.e. WA9,AW11,CE3,DW8,ZA7");
+            string creatingNewEntries = Console.ReadLine();
+            DAL.ArrayedEntriesString(creatingNewEntries);
+            DAL.ArrayedEntriesChar(creatingNewEntries);
+            DAL.SqlCon();
+            Console.ReadKey();
         }
 
         internal static void Edit()

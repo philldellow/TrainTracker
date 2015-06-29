@@ -4,6 +4,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
 
 namespace TrainTracker
 {
@@ -24,7 +25,8 @@ namespace TrainTracker
                 }
             if (mainmenuresponse =="NEW")
                 {
-                  MenuManagment.New();
+                 MenuManagment.NewEntryMenu();
+                    Console.ReadKey();
                 }
             if (mainmenuresponse =="EDIT")
                 {
