@@ -12,7 +12,8 @@ namespace TrainTracker
         //private static string newEntryResponse;
         public static string[] gBallString;
         public static char[] gBallChar;
-        public static SqlConnection myConnection1;
+        
+        //public static SqlConnection myConnection;
         
         public static string[] ArrayedEntriesString(string creatingNewEntries)
         {
@@ -34,64 +35,68 @@ namespace TrainTracker
         {
             using (SqlConnection myConnection = new SqlConnection())
             {
-                myConnection.ConnectionString = "Server=THISLAPTOP\\SQLSERVERIDPD_01;" + "Database=TrainTracka;" +
-                                                "User Id=thislaptop\\Phillip;" +
-                                                "Trusted_Connection = true";
+                myConnection.ConnectionString = "Data Source=THISLAPTOP\\SQLSERVERIDPD_01;Initial Catalog=TrainTracka;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False";
                 try
                 {
                     myConnection.Open();
                     
-                    NewTable(gBallString, gBallChar);
+                    NewTable(gBallString, gBallChar, myConnection);
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.ToString());
                 }
-                return myConnection1 =myConnection;
+                return myConnection;
             }
 
         }
 
         
-        public static void NewTable(string[] tableNames, char[] tableEntries)
+        public static void NewTable(string[] tableNames, char[] tableEntries, SqlConnection myConnection)
         {
-            Console.WriteLine("you wid me fark?");
             int i;
             for (i = 0; i < tableNames.Length; i ++)
             {
                 StringBuilder query = new StringBuilder();
-                Console.WriteLine(query + "1");
+                Console.WriteLine(query + "-");
                 query.Append("CREATE TABLE ");
-                Console.WriteLine(query + "2");
+                
                 query.Append(tableNames[i]);
-                Console.WriteLine(query + "3");
-                query.Append(" ( ");
-                Console.WriteLine(query + "4");
-                for (int j = 0; j < tableEntries.Length; j++)
-                {
-                    Console.WriteLine(query + "5");
-                    if (j%4 == 1 || j%4 == 2 || j%4 == 3)
-                    {
-                        query.Append(tableEntries[j]);
-                        Console.WriteLine(query + "6");
-                        query.Append(" ");
-                        Console.WriteLine(query + "7");
-                        query.Append(tableEntries[j + 1]);
-                        Console.WriteLine(query + "8");
-                        query.Append(" ");
-                        Console.WriteLine(query + "9");
-                        query.Append(tableEntries[j + 2]);
-                        Console.WriteLine(query+"10");
-                        query.Append(", ");
-                    }
-                }
-                if (tableEntries.Length > 1)
-                {
-                    query.Length -= 2;
-                } //Remove trailing ", "
-                query.Append(")");
-                SqlCommand sqlQuery = new SqlCommand(query.ToString(), myConnection1);
-                SqlDataReader reader = sqlQuery.ExecuteReader();
+                
+                query.Append(" ( ORIGIN nChar(255), DESTINATION nChar(255), DISTANCE int);");
+                
+                //for (int j = 0; j < tableEntries.Length-1; j++)
+                //{
+                //    Console.WriteLine(query + "-1-");
+                //    if (j%4 == 0)
+                //    {
+                //        query.Append(tableEntries[j]);
+                       
+                //        query.Append(" ");
+                       
+                //        query.Append(tableEntries[j + 1]);
+                        
+                //        query.Append(" ");
+                       
+                //        //query.Append(tableEntries[j + 2]);
+                       
+                //        query.Append(", ");
+                //        Console.WriteLine(query + "-10-");
+                //    }
+                //}
+                //if (tableEntries.Length > 1)
+                //{
+                //    query.Length -= 2;
+                //} //Remove trailing ", "
+                //query.Append(")");
+                Console.WriteLine(query);
+                SqlCommand sqlQuery = new SqlCommand(query.ToString(), myConnection);
+                
+                sqlQuery.ExecuteNonQuery();//this line took a lot longer than reasonable.
+                
+                //Console.WriteLine(query);
+                
+                //SqlDataReader reader = sqlQuery.ExecuteReader();
             }
         }
     }
