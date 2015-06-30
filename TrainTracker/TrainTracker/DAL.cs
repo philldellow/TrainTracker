@@ -57,15 +57,39 @@ namespace TrainTracker
             int i;
             for (i = 0; i < tableNames.Length; i ++)
             {
-                StringBuilder query = new StringBuilder();
-                Console.WriteLine(query + "-");
-                query.Append("CREATE TABLE ");
+                StringBuilder tableCreator = new StringBuilder();
+                //Console.WriteLine(tableCreator + "-");
+                tableCreator.Append("CREATE TABLE ");
                 
-                query.Append(tableNames[i]);
+                tableCreator.Append(tableNames[i]);
                 
-                query.Append(" ( ORIGIN nChar(255), DESTINATION nChar(255), DISTANCE int);");
-                
-                //for (int j = 0; j < tableEntries.Length-1; j++)
+                tableCreator.Append(" ( ORIGIN nChar(255), DESTINATION nChar(255), DISTANCE int);");
+                SqlCommand sqlQuery = new SqlCommand(tableCreator.ToString(), myConnection);
+                sqlQuery.ExecuteNonQuery();//this line took a lot longer than reasonable.
+
+
+                for (int j = 0; j < tableEntries.Length; j++)
+                {
+                    if (j%4 == 0)
+                    {
+                        StringBuilder dataInsert = new StringBuilder();
+                        dataInsert.Append("INSERT INTO ");
+                        dataInsert.Append(tableNames[i]);
+                        dataInsert.Append(" VALUES ( '");
+                        dataInsert.Append(tableEntries[j]);
+                        dataInsert.Append("', ");
+                        dataInsert.Append(" '");
+                        dataInsert.Append(tableEntries[j + 1]);
+                        dataInsert.Append("', ");
+                        dataInsert.Append(tableEntries[j + 2]);
+                        dataInsert.Append(");");
+                        Console.WriteLine(dataInsert);
+                        SqlCommand dataIncoming = new SqlCommand(dataInsert.ToString(), myConnection);
+                        dataIncoming.ExecuteNonQuery();
+                    }
+                }
+            }
+            //for (int j = 0; j < tableEntries.Length-1; j++)
                 //{
                 //    Console.WriteLine(query + "-1-");
                 //    if (j%4 == 0)
@@ -89,15 +113,8 @@ namespace TrainTracker
                 //    query.Length -= 2;
                 //} //Remove trailing ", "
                 //query.Append(")");
-                Console.WriteLine(query);
-                SqlCommand sqlQuery = new SqlCommand(query.ToString(), myConnection);
                 
-                sqlQuery.ExecuteNonQuery();//this line took a lot longer than reasonable.
                 
-                //Console.WriteLine(query);
-                
-                //SqlDataReader reader = sqlQuery.ExecuteReader();
-            }
         }
     }
 }
