@@ -54,9 +54,11 @@ namespace TrainTracker
         
         public static void NewTable(string[] tableNames, char[] tableEntries, SqlConnection myConnection)
         {
+            
             int i;
             for (i = 0; i < tableNames.Length; i ++)
             {
+                int countTicker = (4*i); 
                 StringBuilder tableCreator = new StringBuilder();
                 //Console.WriteLine(tableCreator + "-");
                 tableCreator.Append("CREATE TABLE ");
@@ -68,26 +70,26 @@ namespace TrainTracker
                 sqlQuery.ExecuteNonQuery();//this line took a lot longer than reasonable.
 
 
-                for (int j = 0; j < tableEntries.Length; j++)
-                {
-                    if (j%4 == 0)
-                    {
+                //for (int j = 0; j < tableEntries.Length; j++)
+                //{
+                //    if (j%4 == 0)
+                //    {
                         StringBuilder dataInsert = new StringBuilder();
                         dataInsert.Append("INSERT INTO ");
                         dataInsert.Append(tableNames[i]);
                         dataInsert.Append(" VALUES ( '");
-                        dataInsert.Append(tableEntries[j]);
+                        dataInsert.Append(tableEntries[countTicker]);
                         dataInsert.Append("', ");
                         dataInsert.Append(" '");
-                        dataInsert.Append(tableEntries[j + 1]);
+                        dataInsert.Append(tableEntries[countTicker + 1]);
                         dataInsert.Append("', ");
-                        dataInsert.Append(tableEntries[j + 2]);
+                        dataInsert.Append(tableEntries[countTicker + 2]);
                         dataInsert.Append(");");
                         Console.WriteLine(dataInsert);
                         SqlCommand dataIncoming = new SqlCommand(dataInsert.ToString(), myConnection);
                         dataIncoming.ExecuteNonQuery();
-                    }
-                }
+                //    }
+                //}
             }
             //for (int j = 0; j < tableEntries.Length-1; j++)
                 //{
