@@ -68,55 +68,54 @@ namespace TrainTracker
                 tableCreator.Append(" ( ORIGIN nChar(255), DESTINATION nChar(255), DISTANCE int);");
                 SqlCommand sqlQuery = new SqlCommand(tableCreator.ToString(), myConnection);
                 sqlQuery.ExecuteNonQuery();//this line took a lot longer than reasonable.
+                StringBuilder dataInsert = new StringBuilder();
 
-
-                //for (int j = 0; j < tableEntries.Length; j++)
-                //{
-                //    if (j%4 == 0)
-                //    {
-                        StringBuilder dataInsert = new StringBuilder();
-                        dataInsert.Append("INSERT INTO ");
-                        dataInsert.Append(tableNames[i]);
-                        dataInsert.Append(" VALUES ( '");
-                        dataInsert.Append(tableEntries[countTicker]);
-                        dataInsert.Append("', ");
-                        dataInsert.Append(" '");
-                        dataInsert.Append(tableEntries[countTicker + 1]);
-                        dataInsert.Append("', ");
-                        dataInsert.Append(tableEntries[countTicker + 2]);
-                        dataInsert.Append(");");
-                        Console.WriteLine(dataInsert);
-                        SqlCommand dataIncoming = new SqlCommand(dataInsert.ToString(), myConnection);
-                        dataIncoming.ExecuteNonQuery();
-                //    }
-                //}
+                dataInsert.Append("INSERT INTO ");
+                dataInsert.Append(tableNames[i]);
+                dataInsert.Append(" VALUES ( '");
+                dataInsert.Append(tableEntries[countTicker]);
+                dataInsert.Append("', ");
+                dataInsert.Append(" '");
+                dataInsert.Append(tableEntries[countTicker + 1]);
+                dataInsert.Append("', ");
+                dataInsert.Append(tableEntries[countTicker + 2]);
+                dataInsert.Append(");");
+                Console.WriteLine(dataInsert);
+                SqlCommand dataIncoming = new SqlCommand(dataInsert.ToString(), myConnection);
+                dataIncoming.ExecuteNonQuery();
             }
-            //for (int j = 0; j < tableEntries.Length-1; j++)
-                //{
-                //    Console.WriteLine(query + "-1-");
-                //    if (j%4 == 0)
-                //    {
-                //        query.Append(tableEntries[j]);
-                       
-                //        query.Append(" ");
-                       
-                //        query.Append(tableEntries[j + 1]);
-                        
-                //        query.Append(" ");
-                       
-                //        //query.Append(tableEntries[j + 2]);
-                       
-                //        query.Append(", ");
-                //        Console.WriteLine(query + "-10-");
-                //    }
-                //}
-                //if (tableEntries.Length > 1)
-                //{
-                //    query.Length -= 2;
-                //} //Remove trailing ", "
-                //query.Append(")");
-                
-                
+
+        }
+
+        public static SqlConnection DropATable()
+        {
+            using (SqlConnection myConnection = new SqlConnection())
+            {
+                myConnection.ConnectionString = "Data Source=THISLAPTOP\\SQLSERVERIDPD_01;Initial Catalog=TrainTracka;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False";
+                try
+                {
+                    myConnection.Open();                  
+                    droppingTable(gBallString, myConnection);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+                return myConnection;
+            }
+
+        }
+
+        private static void droppingTable(string[] tableNames,SqlConnection myConnection)
+        {
+            int i;
+            for (i = 0; i < tableNames.Length; i++)
+            {
+                StringBuilder tableDropper = new StringBuilder();
+                tableDropper.Append("DROP TABLE ");
+                tableDropper.Append(tableNames[i]);
+                Console.WriteLine(tableNames[i]+ "has been DELETED and flushed from the memory of humankind");
+            }
         }
     }
 }

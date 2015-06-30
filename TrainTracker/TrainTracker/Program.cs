@@ -28,9 +28,9 @@ namespace TrainTracker
                  MenuManagment.NewEntryMenu();
                     Console.ReadKey();
                 }
-            if (mainmenuresponse =="EDIT")
+            if (mainmenuresponse =="DELETE")
                 {
-                  MenuManagment.Edit();
+                  MenuManagment.DeleteRoute();
                 }
             if (mainmenuresponse=="CALC")
                 {

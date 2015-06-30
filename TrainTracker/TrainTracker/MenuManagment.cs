@@ -64,9 +64,18 @@ namespace TrainTracker
             Console.ReadKey();
         }
 
-        internal static void Edit()
+        internal static void DeleteRoute()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("     Please Enter the three letter character code for the");
+            Console.WriteLine("     Route you would like to DELETE");
+            Console.WriteLine("      i.e. Wellington to Auckland withs 9 distance would be");
+            Console.WriteLine("                            WA9");
+            Console.WriteLine("For multiple entries please separate the codes with only a comma");
+            Console.WriteLine("                 i.e. WA9,AW11,CE3,DW8,ZA7");
+            string deletingEntries = Console.ReadLine();
+            DAL.ArrayedEntriesChar(deletingEntries);
+            DAL.DropATable();
+            Console.ReadKey();
         }
 
         internal static void Calc()
