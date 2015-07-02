@@ -32,10 +32,10 @@ namespace TrainTracker
                 {
                   MenuManagment.DeleteRoute();
                 }
-            if (mainmenuresponse=="CALC")
-                {
-                    MenuManagment.Calc();
-                }
+            if (mainmenuresponse == "CALC")
+            {
+                MenuManagment.Calc();
+            }
 
             if (mainmenuresponse =="EXIT")
                 {

@@ -27,9 +27,9 @@ namespace TrainTracker
             Console.WriteLine(blankLine);
             Console.WriteLine("**|      To input a new route enter 'New'     |**");
             Console.WriteLine(blankLine);
-            Console.WriteLine("**|  To edit an existing route, enter 'Edit'  |**");
+            Console.WriteLine("**|To delete an existing route, enter 'Delete'|**");
             Console.WriteLine(blankLine);
-            Console.WriteLine("**|      To calculate a route, enter 'Calc'   |**");
+            Console.WriteLine("**|For the distance of a route, enter 'Calc'  |**");
             Console.WriteLine(blankLine);
             Console.WriteLine("**|      To clear the screen, enter 'Clear'   |**");
             Console.WriteLine(blankLine);
@@ -60,7 +60,8 @@ namespace TrainTracker
             string creatingNewEntries = Console.ReadLine();
             DAL.ArrayedEntriesString(creatingNewEntries);
             DAL.ArrayedEntriesChar(creatingNewEntries);
-            DAL.SqlCon();
+            char menuResponse = 'a';
+            DAL.sqlQueryVar(menuResponse);
             Console.ReadKey();
         }
 
@@ -73,14 +74,25 @@ namespace TrainTracker
             Console.WriteLine("For multiple entries please separate the codes with only a comma");
             Console.WriteLine("                 i.e. WA9,AW11,CE3,DW8,ZA7");
             string deletingEntries = Console.ReadLine();
+            DAL.ArrayedEntriesString(deletingEntries);
             DAL.ArrayedEntriesChar(deletingEntries);
-            DAL.DropATable();
+            char menuResponse = 'b';
+            DAL.sqlQueryVar(menuResponse);
             Console.ReadKey();
         }
 
         internal static void Calc()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Please enter the route as single letters separated by a '-'");
+            Console.WriteLine("                   i.e 'A-B-C'  or 'A-B-E-C-D'");
+            string routeDist = Console.ReadLine();
+            DAL.routeDistQuestArray(routeDist);
+            char menuResponse = 'c';
+            DAL.sqlQueryVar(menuResponse);
+            //DAL.ArrayedEntriesChar(routeDist);
+            //DAL.ArrayedEntriesChar(routeDist);
+            //DAL.RouteDistCalc(DAL.ArrayedEntriesChar(routeDist));
+            Console.ReadKey();
         }
 
         internal static void Exit()
