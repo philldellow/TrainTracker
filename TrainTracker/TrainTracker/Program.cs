@@ -10,7 +10,7 @@ namespace TrainTracker
 {
     class Program
     {
-        static void Main()
+        public static void Main()
         {
             MenuManagment.MainMenu();
             string mainmenuresponse = Console.ReadLine();
@@ -43,8 +43,7 @@ namespace TrainTracker
                 }
             else
             {
-                Console.Write("You are attempting something that I am uncomfortable with, please read the menu again and select one of the proposed options");
-                Console.ReadKey();
+                Console.Write("Please read the menu again and select one of the proposed options");
                 Main();
             }
 

@@ -8,6 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.NetworkInformation;
 using System.Threading;
 
+
 namespace TrainTracker
 {
     class DAL
@@ -15,6 +16,8 @@ namespace TrainTracker
         public static string[] gBallString;
         public static char[] gBallChar;
         public static char[] routeDistCharArray;
+        public static List<string> resultsOfRead = new List<string>();
+        public static int readerCount;
         public static void sqlQueryVar(char menuResponse)
         {
             if (menuResponse == 'a')
@@ -29,14 +32,62 @@ namespace TrainTracker
             }
             if (menuResponse == 'c')
             {
-                ReadSQL(questionOneEasySolve(routeDistCharArray));
+                //TO COMPLETE: if statement that is a reg query as to if the entry is valid. Bail out being the rote not exit on the final ELSE.
+                //TO COMPLETE change the legnth of the stary box if the output from reader is greater than one char so outside lines match up in ACSII beauty.
+                if (routeDistCharArray.Length <= 2)
+                {
+                    question1MasterTableQuerySolve(routeDistCharArray);
+                    ReadSQL(question1MasterTableQuerySolve(routeDistCharArray));
+                    Console.WriteLine("The result of your query is a distance of");
+                    Console.WriteLine("****************************************");
+                    Console.WriteLine("*****              " + resultsOfRead[readerCount-1] + "               *****");
+                    Console.WriteLine("****************************************");
+                    Console.ReadKey();
+                    Program.Main();   
+                }
+                if (routeDistCharArray.Length > 2)
+                {
+                    ReadSQL(questionOneEasySolve(routeDistCharArray));
+                    ReadSQL(longQuestion5Solve(routeDistCharArray));
+                    if (doesRouteExist(routeDistCharArray, resultsOfRead))
+                    {
+                        Console.WriteLine("The result of your query is a distance of");
+                        Console.WriteLine("****************************************");
+                        Console.WriteLine("*****              " + resultsOfRead[readerCount-2] + "               *****");
+                        Console.WriteLine("****************************************");
+                        Console.ReadKey();
+                        Program.Main();
+                    }
+                    else
+                    {
+                        Console.WriteLine("****************************************");
+                        Console.WriteLine("!!!!!!!!!!No such route exists!!!!!!!!!!");
+                        Console.WriteLine("****************************************");
+                        Console.ReadKey();
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("****************************************");
+                    Console.WriteLine("!!!!!!!!!!No such route exists!!!!!!!!!!");
+                    Console.WriteLine("****************************************");
+                    Console.ReadKey();
+                }
             }
-            else Console.WriteLine("ahh, I see");
+            else Console.WriteLine("bailing out to main menu");
+        }
+
+        public static bool doesRouteExist(char[] routeCountMenu, List<string> resultsOfRead1)
+        {
+            string transfMark = resultsOfRead[readerCount-1];
+            string transfRouteCountMenu = (routeCountMenu.Length-1).ToString();
+            if (transfMark == transfRouteCountMenu) return true ;
+            return false;
         }
 
         private static void ReadSQL(StringBuilder sqlQueryReadVar)
         {
-            List<string> resultsOfRead = new List<string>();
+            
             using (SqlConnection myConnection = new SqlConnection())
             {
                 myConnection.ConnectionString =
@@ -51,14 +102,10 @@ namespace TrainTracker
                         if (!reader.IsDBNull(0))
                         {
                             resultsOfRead.Add(reader[0].ToString());
+                            readerCount++;
                         }
                     }
                     reader.Close();
-                    Console.WriteLine("The result of your query is a distance of");
-                    Console.WriteLine("****************************************");
-                    Console.WriteLine("*****              " + resultsOfRead[0] + "               *****");
-                    Console.WriteLine("****************************************");
-                    Console.ReadKey();
                     
                 }
                 catch (Exception)
@@ -66,7 +113,6 @@ namespace TrainTracker
                     Console.WriteLine("****************************************");
                     Console.WriteLine("!!!!!!!!!!No such route exists!!!!!!!!!!");
                     Console.WriteLine("****************************************");
-                    Console.ReadKey();
                 }
             }
         }
@@ -147,15 +193,18 @@ namespace TrainTracker
             for (i = 0; i < tableNames.Length; i++)
             {
                 int countTicker = (4 * i);
-                masterTableCreator.Append("INSERT INTO MasterRoutesTable");               
+                masterTableCreator.Append(" INSERT INTO MasterRoutesTable");               
                 masterTableCreator.Append(" VALUES ( '");
                 masterTableCreator.Append(tableEntries[countTicker]);
                 masterTableCreator.Append("', ");
-                masterTableCreator.Append(" '");
+                
                 masterTableCreator.Append(tableEntries[countTicker + 2]);
-                masterTableCreator.Append("', ");
+               
+                masterTableCreator.Append(", '");
                 masterTableCreator.Append(tableEntries[countTicker + 1]);
+                masterTableCreator.Append("' ");
                 masterTableCreator.Append(");");
+                Console.WriteLine(masterTableCreator);
             }
             return masterTableCreator;
         }
@@ -209,6 +258,21 @@ namespace TrainTracker
             return tableDropper;
         }
 
+        public static StringBuilder question1MasterTableQuerySolve(char[] tableEntries)
+        {
+            StringBuilder twoStopsSolution = new StringBuilder();
+            if (tableEntries.Length <= 2)
+            {
+                twoStopsSolution.Append("Select Distance from MasterRoutesTable where origin ='");
+                twoStopsSolution.Append(tableEntries[0]);
+                twoStopsSolution.Append("' and DESTINATION = '");
+                twoStopsSolution.Append(tableEntries[1]);
+                twoStopsSolution.Append("' ;");
+                return twoStopsSolution;
+            }
+            return twoStopsSolution;
+        }
+        
         public static StringBuilder questionOneEasySolve(char[] tableEntries)
         {
             int i;
@@ -226,8 +290,26 @@ namespace TrainTracker
             }
             question1Builder.Remove(question1Builder.Length-6,6);
             question1Builder.Append(") as TotDist;");
-            Console.WriteLine(question1Builder);
             return question1Builder;
+        }
+
+        public static StringBuilder longQuestion5Solve(char[] tableEntries)
+        {
+            int i;
+            StringBuilder question5Builder = new StringBuilder();
+            //StringBuilder subQuestion5Builder = new StringBuilder();
+            question5Builder.Append("Select COUNT(*) from (");
+            for (i = 0; i < tableEntries.Length-1; i++)
+            {
+                question5Builder.Append("Select * from MasterRoutesTable WHERE ORIGIN = '");
+                question5Builder.Append(tableEntries[i]);
+                question5Builder.Append("' and DESTINATION = '");
+                question5Builder.Append(tableEntries[i+1]);
+                question5Builder.Append("' UNION ");
+            }
+            question5Builder.Remove(question5Builder.Length-6,6);
+            question5Builder.Append(") AS ColoumnCountingEh;");
+            return question5Builder;
         }
 
     }

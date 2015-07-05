@@ -97,7 +97,8 @@ namespace TrainTracker
 
         internal static void Exit()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("No, I haven't finished playing trains yet");
+            Program.Main();
         }
     }
 }
