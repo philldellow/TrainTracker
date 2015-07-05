@@ -44,11 +44,11 @@ namespace TrainTracker
 
             if (mainmenuresponse =="EXIT")
                 {
-                    MenuManagment.Exit();
+                   Main();
                 }
             else
             {
-                Console.Write("Please read the menu again and select one of the proposed options");
+                Console.Write("Please read the menu  and select one of the proposed options");
                 Main();
             }
 

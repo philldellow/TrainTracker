@@ -67,8 +67,7 @@ namespace TrainTracker
             DAL.ArrayedEntriesString(creatingNewEntries);
             DAL.ArrayedEntriesChar(creatingNewEntries);
             char menuResponse = 'a';
-            DAL.sqlQueryVar(menuResponse);
-            Console.ReadKey();
+            DAL.sqlQueryVar(menuResponse);            
         }
 
         internal static void DeleteRoute()
@@ -89,7 +88,6 @@ namespace TrainTracker
             DAL.ArrayedEntriesChar(deletingEntries);
             char menuResponse = 'b';
             DAL.sqlQueryVar(menuResponse);
-            Console.ReadKey();
         }
 
         internal static void Dist()
@@ -105,7 +103,6 @@ namespace TrainTracker
             DAL.routeDistQuestArray(routeDist);
             char menuResponse = 'c';
             DAL.sqlQueryVar(menuResponse);
-            Console.ReadKey();
         }
 
         internal static void Stops()

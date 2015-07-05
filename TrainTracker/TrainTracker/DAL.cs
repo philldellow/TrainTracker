@@ -222,6 +222,7 @@ namespace TrainTracker
                 tableCreator.Append("CREATE TABLE ");
                 tableCreator.Append(tableNames[i]);
                 tableCreator.Append(" ( ORIGIN nChar(255), DESTINATION nChar(255), DISTANCE int);");
+                Console.WriteLine("Route "+ tableName);
             }
             return tableCreator;
         }
@@ -316,7 +317,7 @@ namespace TrainTracker
 
         //from here it's all only really notes thinking my way into the problem of counting stops, I think I would end up with 
         // a hybrid what is in the methods above and below. I think method longQuestion5Solve was very close but needs restrictive methods
-        //on the number of stops. Also need a variation that <SELECT SUM(DISTANCE)> and a partneer method that filters the results.
+        //on the number of stops. Also need a variation that <SELECT SUM(DISTANCE)> and a partner method that filters the results.
 
         public static void numStops(string s)
         {
@@ -352,9 +353,7 @@ namespace TrainTracker
                 startStopQuerry.Append(i-1);
                 startStopQuerry.Append("; ");
             }
-            Console.WriteLine(startStopQuerry);
             GoSQL(startStopQuerry);
-            //
         }
     }
 }
