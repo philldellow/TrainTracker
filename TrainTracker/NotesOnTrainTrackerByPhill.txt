@@ -1,0 +1,42 @@
+Hello my name is Phill and Welcome to my attempt at solving the technical test.
+
+The first comments noted as important in the brief were setting a time allocation and sticking to it.
+In response to this I set myself the maximum allowed time (20 hours) and have finished, not the tasks, but the quantity of time.
+
+I found this challenge great fun, and my only regret is not having long periods of continuously dedicated time to have 
+really got into the flow.
+I found the restriction of not using frameworks such as entity for data access a great boon to my learning.
+I have only ever used entity framework to talk to databases before, and now after no few hours, am feeling 
+really comfortable in SQL out side of entity framework. 
+
+The planning.
+
+I decided to do a console app as I've been building mostly in MVC ASP.NET, I haven't used webforms before, and am slightly more 
+familiar with console apps. It took me a couple of hours to quickly re-read my notes on console apps and create the 
+framework of menus which I focused in on the first five or so questions.
+
+My planning was around asking questions like:
+What are my nouns? database, origins, destinations, distance, routes, menus, results.
+
+What do I use to represent these?	Database tables for the routes with the origins destinations and distances being values.
+									Text based menus with text inputs.
+
+What are my verbs, how will I work with them?	Create tables that represent every route that is entered. 
+												Create a table that has all the routes in in.
+												While doing so I will create a way to delete any tables.
+												Create a method that looks up the origin, then joins the entry of an origins 
+												destination to the origin again, recursing until all the origins are consumed. 
+												Sum the distances of this row*1.
+												
+The first major rabbit hole I fell down was talking to the SQL databases, establishing that my connection string was working and the fundamentals of getting the 
+string builders error free. 
+I like to follow the principles of keeping methods small, but had an open/execute query tagged on to the bottom of all my string builders.
+With everything becoming unworkable spaghetti, so I took a few hours to re-factor the 'creation sql talk' into it's own method.
+While mentioning refactoring, I would like to do a lot more on my code as it doesn't really resemble any nice ideals of OO that I'm aware of, but again,
+time was pretty precious.
+													*1 While doing this it became apparent that the Sum would work even if all the origin/destination pairs 
+													were not present. Had to refactor/ rewrite so that a count of how many passes through the recurse
+													were made and compare this to the count of the original query's entry.
+													(This seems to work, but with further testing I have found a bug which time permitting could be solved
+													but may need another approach. If you want to activate the bug, enter a route that doesn't exist, then go 
+													back and try to enter a good route, it will respond that the good route doesn't exist). 

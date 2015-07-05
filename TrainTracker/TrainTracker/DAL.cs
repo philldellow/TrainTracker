@@ -314,6 +314,10 @@ namespace TrainTracker
             return question5Builder;
         }
 
+        //from here it's all only really notes thinking my way into the problem of counting stops, I think I would end up with 
+        // a hybrid what is in the methods above and below. I think method longQuestion5Solve was very close but needs restrictive methods
+        //on the number of stops. Also need a variation that <SELECT SUM(DISTANCE)> and a partneer method that filters the results.
+
         public static void numStops(string s)
         {
             int i;
@@ -324,7 +328,7 @@ namespace TrainTracker
             startStopQuerry.Append("SELECT * FROM dbo.MasterRoutesTable WHERE ORIGIN = '");
             startStopQuerry.Append(startStopArray[0]);
             startStopQuerry.Append("'; ");
-            //need a loop, unsure of endpoint, maybe when the variable equals the second letter of the originalinput, the final destination)
+            //need a loop, unsure of endpoint, maybe when the variable equals the second letter of the original input, the final destination)
             //will loop to 25 as a work around till better thought occurs
             for(i=2; i<27; i++)
             {
