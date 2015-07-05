@@ -42,6 +42,7 @@ namespace TrainTracker
                     Console.WriteLine("****************************************");
                     Console.WriteLine("*****              " + resultsOfRead[readerCount-1] + "               *****");
                     Console.WriteLine("****************************************");
+                    resultsOfRead = new List<string>();
                     Console.ReadKey();
                     Program.Main();   
                 }
@@ -55,6 +56,7 @@ namespace TrainTracker
                         Console.WriteLine("****************************************");
                         Console.WriteLine("*****              " + resultsOfRead[readerCount-2] + "               *****");
                         Console.WriteLine("****************************************");
+                        resultsOfRead = new List<string>();
                         Console.ReadKey();
                         Program.Main();
                     }
@@ -63,6 +65,7 @@ namespace TrainTracker
                         Console.WriteLine("****************************************");
                         Console.WriteLine("!!!!!!!!!!No such route exists!!!!!!!!!!");
                         Console.WriteLine("****************************************");
+                        readerCount = 0;
                         Console.ReadKey();
                     }
                 }
@@ -71,6 +74,7 @@ namespace TrainTracker
                     Console.WriteLine("****************************************");
                     Console.WriteLine("!!!!!!!!!!No such route exists!!!!!!!!!!");
                     Console.WriteLine("****************************************");
+                    readerCount = 0;
                     Console.ReadKey();
                 }
             }
@@ -108,7 +112,7 @@ namespace TrainTracker
                     reader.Close();
                     
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     Console.WriteLine("****************************************");
                     Console.WriteLine("!!!!!!!!!!No such route exists!!!!!!!!!!");
@@ -204,7 +208,6 @@ namespace TrainTracker
                 masterTableCreator.Append(tableEntries[countTicker + 1]);
                 masterTableCreator.Append("' ");
                 masterTableCreator.Append(");");
-                Console.WriteLine(masterTableCreator);
             }
             return masterTableCreator;
         }
@@ -297,7 +300,6 @@ namespace TrainTracker
         {
             int i;
             StringBuilder question5Builder = new StringBuilder();
-            //StringBuilder subQuestion5Builder = new StringBuilder();
             question5Builder.Append("Select COUNT(*) from (");
             for (i = 0; i < tableEntries.Length-1; i++)
             {
@@ -312,5 +314,43 @@ namespace TrainTracker
             return question5Builder;
         }
 
+        public static void numStops(string s)
+        {
+            int i;
+            char[] startStopArray = s.ToCharArray();
+            StringBuilder startStopQuerry = new StringBuilder();
+            startStopQuerry.Append("Create Table StartStops (ORIGIN1 nChar(5), DISTANCE1 int, DESTINATION1 nChar(5));");
+            startStopQuerry.Append("Insert INTO StartStops (ORIGIN1, DISTANCE1, DESTINATION1)");
+            startStopQuerry.Append("SELECT * FROM dbo.MasterRoutesTable WHERE ORIGIN = '");
+            startStopQuerry.Append(startStopArray[0]);
+            startStopQuerry.Append("'; ");
+            //need a loop, unsure of endpoint, maybe when the variable equals the second letter of the originalinput, the final destination)
+            //will loop to 25 as a work around till better thought occurs
+            for(i=2; i<27; i++)
+            {
+                startStopQuerry.Append("ALTER TABLE dbo.StartStops ADD ORIGIN");
+                startStopQuerry.Append(i);
+                startStopQuerry.Append(" nChar(5);");
+                startStopQuerry.Append("ALTER TABLE dbo.StartStops ADD DISTANCE");
+                startStopQuerry.Append(i);
+                startStopQuerry.Append(" int;");
+                startStopQuerry.Append("ALTER TABLE dbo.StartStops ADD DESTINATION");
+                startStopQuerry.Append(i);
+                startStopQuerry.Append(" nChar(5);");
+                startStopQuerry.Append("Insert INTO StartStops (ORIGIN");
+                startStopQuerry.Append(i);
+                startStopQuerry.Append(", DISTANCE");
+                startStopQuerry.Append(i);
+                startStopQuerry.Append(", DESTINATION");
+                startStopQuerry.Append(i);
+                startStopQuerry.Append(
+                    ") SELECT ORIGIN, DISTANCE, DESTINATION FROM MasterRoutesTable, StartStops where ORIGIN = DESTINATION");
+                startStopQuerry.Append(i-1);
+                startStopQuerry.Append("; ");
+            }
+            Console.WriteLine(startStopQuerry);
+            GoSQL(startStopQuerry);
+            //
+        }
     }
 }

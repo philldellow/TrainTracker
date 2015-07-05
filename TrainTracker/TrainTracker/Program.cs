@@ -32,9 +32,14 @@ namespace TrainTracker
                 {
                   MenuManagment.DeleteRoute();
                 }
-            if (mainmenuresponse == "CALC")
+            if (mainmenuresponse == "DIST")
             {
-                MenuManagment.Calc();
+                MenuManagment.Dist();
+            }
+
+            if (mainmenuresponse == "STOPS")
+            {
+                MenuManagment.Stops();
             }
 
             if (mainmenuresponse =="EXIT")

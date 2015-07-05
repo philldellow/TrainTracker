@@ -29,9 +29,9 @@ namespace TrainTracker
             Console.WriteLine(blankLine);
             Console.WriteLine("**|To delete an existing route, enter 'Delete'|**");
             Console.WriteLine(blankLine);
-            Console.WriteLine("**|For the distance of a route, enter 'Calc'  |**");
+            Console.WriteLine("**|For the distance of a route, enter 'Dist'  |**");
             Console.WriteLine(blankLine);
-            Console.WriteLine("**|      To clear the screen, enter 'Clear'   |**");
+            Console.WriteLine("**|    For the number of stops, enter 'Stops' |**");
             Console.WriteLine(blankLine);
             Console.WriteLine("**|To exit this menu at any time, enter 'Exit'|**");
             Console.WriteLine(blankLine);
@@ -58,6 +58,12 @@ namespace TrainTracker
             Console.WriteLine("For multiple entries please separate the codes with only a comma");
             Console.WriteLine("                 i.e. WA9,AW11,CE3,DW8,ZA7");
             string creatingNewEntries = Console.ReadLine();
+            string help = creatingNewEntries.ToUpper();
+            if (help == "HELP")
+            {
+                Program.Main();
+            }
+
             DAL.ArrayedEntriesString(creatingNewEntries);
             DAL.ArrayedEntriesChar(creatingNewEntries);
             char menuResponse = 'a';
@@ -74,6 +80,11 @@ namespace TrainTracker
             Console.WriteLine("For multiple entries please separate the codes with only a comma");
             Console.WriteLine("                 i.e. WA9,AW11,CE3,DW8,ZA7");
             string deletingEntries = Console.ReadLine();
+            string help = deletingEntries.ToUpper();
+            if (help == "HELP")
+            {
+                Program.Main();
+            }
             DAL.ArrayedEntriesString(deletingEntries);
             DAL.ArrayedEntriesChar(deletingEntries);
             char menuResponse = 'b';
@@ -81,18 +92,37 @@ namespace TrainTracker
             Console.ReadKey();
         }
 
-        internal static void Calc()
+        internal static void Dist()
         {
             Console.WriteLine("Please enter the route as single letters separated by a '-'");
             Console.WriteLine("                   i.e 'A-B-C'  or 'A-B-E-C-D'");
             string routeDist = Console.ReadLine();
+            string help = routeDist.ToUpper();
+            if (help == "HELP")
+            {
+                Program.Main();
+            }
             DAL.routeDistQuestArray(routeDist);
             char menuResponse = 'c';
             DAL.sqlQueryVar(menuResponse);
-            //DAL.ArrayedEntriesChar(routeDist);
-            //DAL.ArrayedEntriesChar(routeDist);
-            //DAL.RouteDistCalc(DAL.ArrayedEntriesChar(routeDist));
             Console.ReadKey();
+        }
+
+        internal static void Stops()
+        {
+            Console.WriteLine("Please enter the route you would like to know the number of stops for");
+            Console.WriteLine("      Enter as an origin letter and destination letter");
+            Console.WriteLine("       i.e. For the number of stops between C and C");
+            Console.WriteLine("                            CC");
+            string numStops = Console.ReadLine();
+            string help = numStops.ToUpper();
+            if (help == "HELP")
+            {
+                Program.Main();
+            }
+            DAL.numStops(numStops);
+            char menuResponse = 'd';
+            DAL.sqlQueryVar(menuResponse);
         }
 
         internal static void Exit()
