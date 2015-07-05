@@ -31,8 +31,8 @@ namespace TrainTracker
             Console.WriteLine(blankLine);
             Console.WriteLine("**|For the distance of a route, enter 'Dist'  |**");
             Console.WriteLine(blankLine);
-            Console.WriteLine("**|    For the number of stops, enter 'Stops' |**");
-            Console.WriteLine(blankLine);
+            //Console.WriteLine("**|    For the number of stops, enter 'Stops' |**");
+            //Console.WriteLine(blankLine);
             Console.WriteLine("**|To exit this menu at any time, enter 'Exit'|**");
             Console.WriteLine(blankLine);
             for (i = 0; i < 3; i++)
@@ -105,22 +105,22 @@ namespace TrainTracker
             DAL.sqlQueryVar(menuResponse);
         }
 
-        internal static void Stops()
-        {
-            Console.WriteLine("Please enter the route you would like to know the number of stops for");
-            Console.WriteLine("      Enter as an origin letter and destination letter");
-            Console.WriteLine("       i.e. For the number of stops between C and C");
-            Console.WriteLine("                            CC");
-            string numStops = Console.ReadLine();
-            string help = numStops.ToUpper();
-            if (help == "HELP")
-            {
-                Program.Main();
-            }
-            DAL.numStops(numStops);
-            char menuResponse = 'd';
-            DAL.sqlQueryVar(menuResponse);
-        }
+        //internal static void Stops()
+        //{
+        //    Console.WriteLine("Please enter the route you would like to know the number of stops for");
+        //    Console.WriteLine("      Enter as an origin letter and destination letter");
+        //    Console.WriteLine("       i.e. For the number of stops between C and C");
+        //    Console.WriteLine("                            CC");
+        //    string numStops = Console.ReadLine();
+        //    string help = numStops.ToUpper();
+        //    if (help == "HELP")
+        //    {
+        //        Program.Main();
+        //    }
+        //    DAL.numStops(numStops);
+        //    char menuResponse = 'd';
+        //    DAL.sqlQueryVar(menuResponse);
+        //}
 
         internal static void Exit()
         {

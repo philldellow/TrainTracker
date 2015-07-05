@@ -11,18 +11,19 @@ using System.Threading;
 
 namespace TrainTracker
 {
-    class DAL
+    internal class DAL
     {
         public static string[] gBallString;
         public static char[] gBallChar;
         public static char[] routeDistCharArray;
         public static List<string> resultsOfRead = new List<string>();
         public static int readerCount;
+
         public static void sqlQueryVar(char menuResponse)
         {
             if (menuResponse == 'a')
             {
-                GoSQL(MasterRoutesTable(gBallString,gBallChar));
+                GoSQL(MasterRoutesTable(gBallString, gBallChar));
                 GoSQL(NewRoutesTables(gBallString));
                 GoSQL(TableDataInsert(gBallString, gBallChar));
             }
@@ -40,11 +41,11 @@ namespace TrainTracker
                     ReadSQL(question1MasterTableQuerySolve(routeDistCharArray));
                     Console.WriteLine("The result of your query is a distance of");
                     Console.WriteLine("****************************************");
-                    Console.WriteLine("*****              " + resultsOfRead[readerCount-1] + "               *****");
+                    Console.WriteLine("*****              " + resultsOfRead[readerCount - 1] + "               *****");
                     Console.WriteLine("****************************************");
                     resultsOfRead = new List<string>();
                     Console.ReadKey();
-                    Program.Main();   
+                    Program.Main();
                 }
                 if (routeDistCharArray.Length > 2)
                 {
@@ -54,7 +55,7 @@ namespace TrainTracker
                     {
                         Console.WriteLine("The result of your query is a distance of");
                         Console.WriteLine("****************************************");
-                        Console.WriteLine("*****              " + resultsOfRead[readerCount-2] + "               *****");
+                        Console.WriteLine("*****              " + resultsOfRead[0] +"               *****");
                         Console.WriteLine("****************************************");
                         resultsOfRead = new List<string>();
                         Console.ReadKey();
@@ -65,7 +66,7 @@ namespace TrainTracker
                         Console.WriteLine("****************************************");
                         Console.WriteLine("!!!!!!!!!!No such route exists!!!!!!!!!!");
                         Console.WriteLine("****************************************");
-                        readerCount = 0;
+                        
                         Console.ReadKey();
                     }
                 }
@@ -74,7 +75,7 @@ namespace TrainTracker
                     Console.WriteLine("****************************************");
                     Console.WriteLine("!!!!!!!!!!No such route exists!!!!!!!!!!");
                     Console.WriteLine("****************************************");
-                    readerCount = 0;
+                    
                     Console.ReadKey();
                 }
             }
@@ -83,15 +84,29 @@ namespace TrainTracker
 
         public static bool doesRouteExist(char[] routeCountMenu, List<string> resultsOfRead1)
         {
-            string transfMark = resultsOfRead[readerCount-1];
-            string transfRouteCountMenu = (routeCountMenu.Length-1).ToString();
-            if (transfMark == transfRouteCountMenu) return true ;
+            string transfMark;
+            if (readerCount > 2)
+            {
+               transfMark = (readerCount).ToString(); 
+            }
+            else 
+            {
+                transfMark = resultsOfRead[readerCount - 1];
+            }
+
+            string transfRouteCountMenu = (routeCountMenu.Length - 1).ToString();
+            if (transfMark == transfRouteCountMenu)
+            {
+                
+                return true;
+            }
+            
             return false;
         }
 
         private static void ReadSQL(StringBuilder sqlQueryReadVar)
         {
-            
+
             using (SqlConnection myConnection = new SqlConnection())
             {
                 myConnection.ConnectionString =
@@ -110,7 +125,7 @@ namespace TrainTracker
                         }
                     }
                     reader.Close();
-                    
+
                 }
                 catch (Exception e)
                 {
@@ -158,7 +173,7 @@ namespace TrainTracker
         {
             int i = new int();
             char[] distQuest = routeDist.ToCharArray();
-            char[] distQuest1 = new char[((distQuest.Length/2)+1)];
+            char[] distQuest1 = new char[((distQuest.Length/2) + 1)];
             while (i < distQuest.Length)
             {
                 if (i == 0)
@@ -191,19 +206,18 @@ namespace TrainTracker
         public static StringBuilder MasterRoutesTable(string[] tableNames, char[] tableEntries)
         {
             StringBuilder masterTableCreator = new StringBuilder();
-            masterTableCreator.Append("CREATE TABLE MasterRoutesTable ( ORIGIN nChar(255), DISTANCE int, DESTINATION nChar(255));");
+            masterTableCreator.Append(
+                "CREATE TABLE MasterRoutesTable ( ORIGIN nChar(255), DISTANCE int, DESTINATION nChar(255));");
 
             int i;
             for (i = 0; i < tableNames.Length; i++)
             {
-                int countTicker = (4 * i);
-                masterTableCreator.Append(" INSERT INTO MasterRoutesTable");               
+                int countTicker = (4*i);
+                masterTableCreator.Append(" INSERT INTO MasterRoutesTable");
                 masterTableCreator.Append(" VALUES ( '");
                 masterTableCreator.Append(tableEntries[countTicker]);
                 masterTableCreator.Append("', ");
-                
                 masterTableCreator.Append(tableEntries[countTicker + 2]);
-               
                 masterTableCreator.Append(", '");
                 masterTableCreator.Append(tableEntries[countTicker + 1]);
                 masterTableCreator.Append("' ");
@@ -222,42 +236,42 @@ namespace TrainTracker
                 tableCreator.Append("CREATE TABLE ");
                 tableCreator.Append(tableNames[i]);
                 tableCreator.Append(" ( ORIGIN nChar(255), DESTINATION nChar(255), DISTANCE int);");
-                Console.WriteLine("Route "+ tableName);
+                Console.WriteLine("Route " + tableNames[i]);
             }
             return tableCreator;
         }
 
         public static StringBuilder TableDataInsert(string[] tableNames, char[] tableEntries)
         {
-                StringBuilder dataInsert = new StringBuilder();
-                int i;
-                for (i = 0; i < tableNames.Length; i++)
-                {
-                    int countTicker = (4 * i);
-                    dataInsert.Append("INSERT INTO ");
-                    dataInsert.Append(tableNames[i]);
-                    dataInsert.Append(" VALUES ( '");
-                    dataInsert.Append(tableEntries[countTicker]);
-                    dataInsert.Append("', ");
-                    dataInsert.Append(" '");
-                    dataInsert.Append(tableEntries[countTicker + 1]);
-                    dataInsert.Append("', ");
-                    dataInsert.Append(tableEntries[countTicker + 2]);
-                    dataInsert.Append(");");
-                }
+            StringBuilder dataInsert = new StringBuilder();
+            int i;
+            for (i = 0; i < tableNames.Length; i++)
+            {
+                int countTicker = (4*i);
+                dataInsert.Append("INSERT INTO ");
+                dataInsert.Append(tableNames[i]);
+                dataInsert.Append(" VALUES ( '");
+                dataInsert.Append(tableEntries[countTicker]);
+                dataInsert.Append("', ");
+                dataInsert.Append(" '");
+                dataInsert.Append(tableEntries[countTicker + 1]);
+                dataInsert.Append("', ");
+                dataInsert.Append(tableEntries[countTicker + 2]);
+                dataInsert.Append(");");
+            }
             return dataInsert;
         }
 
         public static StringBuilder droppingTable(string[] tableNames)
         {
-           int i;
+            int i;
             StringBuilder tableDropper = new StringBuilder();
             for (i = 0; i < tableNames.Length; i++)
             {
                 tableDropper.Append("DROP TABLE ");
                 tableDropper.Append(tableNames[i]);
                 tableDropper.Append("; ");
-                Console.WriteLine(tableNames[i]+ "has been DELETED and erased from the history of humankind");
+                Console.WriteLine(tableNames[i] + "has been DELETED and erased from the history of humankind");
             }
             return tableDropper;
         }
@@ -276,7 +290,7 @@ namespace TrainTracker
             }
             return twoStopsSolution;
         }
-        
+
         public static StringBuilder questionOneEasySolve(char[] tableEntries)
         {
             int i;
@@ -292,7 +306,7 @@ namespace TrainTracker
                 question1Builder.Append(selectDestination);
                 question1Builder.Append("'UNION ");
             }
-            question1Builder.Remove(question1Builder.Length-6,6);
+            question1Builder.Remove(question1Builder.Length - 6, 6);
             question1Builder.Append(") as TotDist;");
             return question1Builder;
         }
@@ -302,15 +316,15 @@ namespace TrainTracker
             int i;
             StringBuilder question5Builder = new StringBuilder();
             question5Builder.Append("Select COUNT(*) from (");
-            for (i = 0; i < tableEntries.Length-1; i++)
+            for (i = 0; i < tableEntries.Length - 1; i++)
             {
                 question5Builder.Append("Select * from MasterRoutesTable WHERE ORIGIN = '");
                 question5Builder.Append(tableEntries[i]);
                 question5Builder.Append("' and DESTINATION = '");
-                question5Builder.Append(tableEntries[i+1]);
+                question5Builder.Append(tableEntries[i + 1]);
                 question5Builder.Append("' UNION ");
             }
-            question5Builder.Remove(question5Builder.Length-6,6);
+            question5Builder.Remove(question5Builder.Length - 6, 6);
             question5Builder.Append(") AS ColoumnCountingEh;");
             return question5Builder;
         }
@@ -319,41 +333,45 @@ namespace TrainTracker
         // a hybrid what is in the methods above and below. I think method longQuestion5Solve was very close but needs restrictive methods
         //on the number of stops. Also need a variation that <SELECT SUM(DISTANCE)> and a partner method that filters the results.
 
-        public static void numStops(string s)
-        {
-            int i;
-            char[] startStopArray = s.ToCharArray();
-            StringBuilder startStopQuerry = new StringBuilder();
-            startStopQuerry.Append("Create Table StartStops (ORIGIN1 nChar(5), DISTANCE1 int, DESTINATION1 nChar(5));");
-            startStopQuerry.Append("Insert INTO StartStops (ORIGIN1, DISTANCE1, DESTINATION1)");
-            startStopQuerry.Append("SELECT * FROM dbo.MasterRoutesTable WHERE ORIGIN = '");
-            startStopQuerry.Append(startStopArray[0]);
-            startStopQuerry.Append("'; ");
+        //public static void numStops(string s)
+        //{
+        //    int i;
+        //    char[] startStopArray = s.ToCharArray();
+        //    StringBuilder startStopQuerry = new StringBuilder();
+        //    startStopQuerry.Append("Create Table StartStops (ORIGIN1 nChar(5), DISTANCE1 int, DESTINATION1 nChar(5));");
+        //    startStopQuerry.Append("Insert INTO StartStops (ORIGIN1, DISTANCE1, DESTINATION1)");
+        //    startStopQuerry.Append("SELECT * FROM dbo.MasterRoutesTable WHERE ORIGIN = '");
+        //    startStopQuerry.Append(startStopArray[0]);
+        //    startStopQuerry.Append("'; ");
             //need a loop, unsure of endpoint, maybe when the variable equals the second letter of the original input, the final destination)
-            //will loop to 25 as a work around till better thought occurs
-            for(i=2; i<27; i++)
-            {
-                startStopQuerry.Append("ALTER TABLE dbo.StartStops ADD ORIGIN");
-                startStopQuerry.Append(i);
-                startStopQuerry.Append(" nChar(5);");
-                startStopQuerry.Append("ALTER TABLE dbo.StartStops ADD DISTANCE");
-                startStopQuerry.Append(i);
-                startStopQuerry.Append(" int;");
-                startStopQuerry.Append("ALTER TABLE dbo.StartStops ADD DESTINATION");
-                startStopQuerry.Append(i);
-                startStopQuerry.Append(" nChar(5);");
-                startStopQuerry.Append("Insert INTO StartStops (ORIGIN");
-                startStopQuerry.Append(i);
-                startStopQuerry.Append(", DISTANCE");
-                startStopQuerry.Append(i);
-                startStopQuerry.Append(", DESTINATION");
-                startStopQuerry.Append(i);
-                startStopQuerry.Append(
-                    ") SELECT ORIGIN, DISTANCE, DESTINATION FROM MasterRoutesTable, StartStops where ORIGIN = DESTINATION");
-                startStopQuerry.Append(i-1);
-                startStopQuerry.Append("; ");
-            }
-            GoSQL(startStopQuerry);
-        }
+            //will loop to 25 as a work around till better thought occurs. 
+            //Furthermore it seems that my little method below keeps exceed some sort of memory quotient making my computer crash repeatively
+            //First time my code has broke my computer! :)
+
+            //    for(i=2; i<27; i++)
+            //    {
+            //        startStopQuerry.Append("ALTER TABLE dbo.StartStops ADD ORIGIN");
+            //        startStopQuerry.Append(i);
+            //        startStopQuerry.Append(" nChar(5);");
+            //        startStopQuerry.Append("ALTER TABLE dbo.StartStops ADD DISTANCE");
+            //        startStopQuerry.Append(i);
+            //        startStopQuerry.Append(" int;");
+            //        startStopQuerry.Append("ALTER TABLE dbo.StartStops ADD DESTINATION");
+            //        startStopQuerry.Append(i);
+            //        startStopQuerry.Append(" nChar(5);");
+            //        startStopQuerry.Append("Insert INTO StartStops (ORIGIN");
+            //        startStopQuerry.Append(i);
+            //        startStopQuerry.Append(", DISTANCE");
+            //        startStopQuerry.Append(i);
+            //        startStopQuerry.Append(", DESTINATION");
+            //        startStopQuerry.Append(i);
+            //        startStopQuerry.Append(
+            //            ") SELECT ORIGIN, DISTANCE, DESTINATION FROM MasterRoutesTable, StartStops where ORIGIN = DESTINATION");
+            //        startStopQuerry.Append(i-1);
+            //        startStopQuerry.Append("; ");
+            //    }
+            //    GoSQL(startStopQuerry);
+            //}
+        
     }
 }

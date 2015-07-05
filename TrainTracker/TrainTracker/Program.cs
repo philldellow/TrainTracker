@@ -37,10 +37,10 @@ namespace TrainTracker
                 MenuManagment.Dist();
             }
 
-            if (mainmenuresponse == "STOPS")
-            {
-                MenuManagment.Stops();
-            }
+            //if (mainmenuresponse == "STOPS")
+            //{
+            //    MenuManagment.Stops();
+            //}
 
             if (mainmenuresponse =="EXIT")
                 {
